@@ -1,0 +1,80 @@
+/*Getting rid of default padding */
+* {
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+}
+
+header, footer, nav, article, section {
+    display: block;
+}
+
+body {
+    background-color: gainsboro;
+}
+
+.header {
+    background-color: lightseagreen;
+    height: 63px;
+    opacity: 60%;
+    /*position: fixed;*/
+}
+
+.container {
+    width: 90%;
+    margin: 0% auto;
+    border: 1px #4eb194;
+}
+
+.main_logo {
+    height: 68px;
+    width: 115px;
+    float: left;
+}
+
+.top_head {
+    float: left;
+}
+
+.top_head ul li {
+    float: left;
+    margin-top: 20%;
+    padding: 25px 66px;
+}
+
+.sign_up {
+    height: 20px;
+    width: auto;
+    border-style: dotted;
+}
+
+.clear {
+    clear: both;
+}
+
+/*
+.upload-create li.upload-create .secondary {
+    display: inline-block;
+    height: auto;
+    width: auto;
+}*/
+/*start of log in*/
+.logincont {
+    width: 500px;
+    height: 500px;
+    margin: 0px auto;
+    text-align: center;
+    background-color: rgba(52, 73, 94, 0.5);
+    margin-top: 40px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.logincont img {
+    width: 70;
+    height: 40;
+    margin-top: -27px;
+}
+
+/*End of log in form*/
