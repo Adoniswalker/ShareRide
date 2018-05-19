@@ -43,6 +43,8 @@ if (loggedin()) {
                 $stmt->bindParam(':space', $space_available);
 //            $stmt->bindParam(':id', $id);
                 $stmt->execute();
+                $last_id = $conn->LastInsertId();
+                send_mail_success($conn, $last_id);
                 header('LOCATION: ../index.php?success=Go for ride!! Well send mail');
             } else {
                 header('LOCATION: ../index.php?error=Ride already taken!!');
