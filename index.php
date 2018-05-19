@@ -28,7 +28,7 @@ LEFT JOIN register rg on rg.id = rd.driver WHERE rd.date >= now() AND rd.booked=
                 while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
                     echo '<tr>';
                     echo "<th scope='row'>$row[0]</th><td>$row[1]</td><td>$row[2]</td><td>$row[3]</td><td>$row[4]</td>
-                    <td>$row[5]</td><td><a href='book.php?id=$row[0]'>Book</a></td>";
+                    <td>$row[5]</td><td><a href='dependant/book.php?id=$row[0]'>Book</a></td>";
                     echo '</tr>';
                 }
             } catch
