@@ -82,10 +82,4 @@ where br.driver=:user_id";
         </div>
     </div>
 </div>
-<footer class="align-content-center">
-    <div class="bg-primary">
-    <p class="text-info">All rights reserved. Shareride inc</p>
-    </div>
-</footer>
-</body>
-</html>
+<?php include "dependant/footer_file.php"?>
