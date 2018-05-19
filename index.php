@@ -82,4 +82,5 @@ where br.driver=:user_id";
         </div>
     </div>
 </div>
-<?php include "dependant/footer_file.php"?>
+
+<?php include "dependant/footer_file.php"; ?>
