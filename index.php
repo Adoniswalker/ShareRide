@@ -73,8 +73,8 @@ where br.driver=:user_id";
                 }
                 echo "</div>";
                 echo "</div class='row'>";
-                echo "<h4>Rides You gave Out</h4>";
                 echo '</table>';
+                echo "<h4>Rides You gave Out</h4>";
                 echo '<table class="table table-hover">';
                 echo "<thead><th>Name</th><th>From</th><th>To</th><th>Date</th></thead>";
                 while ($row = $rides_givenout->fetch(PDO::FETCH_NUM)) {

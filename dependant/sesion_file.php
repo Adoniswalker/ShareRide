@@ -65,9 +65,9 @@ function local_postgres(){
     }
 }
 // used to switch to different database
-//$conn = get_amazon();
+$conn = get_amazon();
 //$conn =local();
-$conn = local_postgres();
+//$conn = local_postgres();
 function loggedin()
 {
     if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
@@ -81,7 +81,7 @@ function get_user_data($field)
 {
     global $conn;
     $id = $_SESSION['user_id'];
-    $ud = $conn->prepare("SELECT '$field' FROM register WHERE id = $id ");
+    $ud = $conn->prepare("SELECT $field FROM register WHERE id = $id ");
     try {
         $ud->execute();
         if ($ud->rowcount()) {
@@ -92,6 +92,7 @@ function get_user_data($field)
         }
     } catch (PDOException $e) {
         echo "Not found" . $e->getMessage();
+        return 0;
     }
 }
 
