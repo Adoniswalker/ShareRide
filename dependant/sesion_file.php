@@ -46,8 +46,8 @@ function local(){
         echo "there was an error <br>". $e->getMessage();
     }
 }
-//$conn = get_amazon();
-$conn =local();
+$conn = get_amazon();
+//$conn =local();
 function loggedin()
 {
     if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
