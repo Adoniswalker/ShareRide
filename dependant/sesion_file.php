@@ -9,7 +9,44 @@ if (isset($_SERVER['HTTP_REFERER'])) {
 /*if(!$referer){
 	$referer = NULL;
 }*/
-require_once 'db.connect.php';
+//require_once 'db.connect.php';
+function get_amazon(){
+    $dbopts = parse_url(getenv('DATABASE_URL'));
+    try {
+        $user = $dbopts["user"];
+        $password = $dbopts["pass"];
+        $host =$dbopts["host"];
+        $port = $dbopts["port"];
+        $dbname = ltrim($dbopts["path"]);
+        $conn = new PDO("pgsql:host=$host;dbname=$dbname;user=$user;port=$port;password=$password");
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $conn;
+    }
+    catch(PDOException $e)
+    {
+        echo "there was an error <br>". $e->getMessage();
+    }
+}
+function local(){
+    $servername = "127.0.0.1";
+    $username = "root";
+    $password = "";
+    global $conn;
+
+    try {
+        $conn = new PDO("mysql:host=$servername; dbname=shareride", $username, $password);
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $conn;
+//    echo "connected succefully";
+    }
+    catch(PDOException $e)
+    {
+        echo "there was an error <br>". $e->getMessage();
+    }
+}
+$conn = get_amazon();
 function loggedin()
 {
     if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {

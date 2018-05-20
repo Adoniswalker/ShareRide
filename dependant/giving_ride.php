@@ -1,5 +1,5 @@
 <?php
-require_once 'db.connect.php';
+//require_once 'db.connect.php';
 $origin = $origin_err = $destination = $destination_err = $space =null;
 $space_err = $time = $time_err =$giventime_err =  null;
 $datetime_val = date("Y-m-d h:i:sa");

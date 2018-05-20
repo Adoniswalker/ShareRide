@@ -1,5 +1,6 @@
 <?php
 require_once "dependant/layout.php";
+require_once "dependant/pro.functions.php";
 if (loggedin()) {
     $user_name = get_user_data('first_name');
     if (isset($_GET['error'])) {
