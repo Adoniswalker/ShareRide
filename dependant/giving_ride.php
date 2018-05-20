@@ -1,9 +1,14 @@
 <?php
 //require_once 'db.connect.php';
-$origin = $origin_err = $destination = $destination_err = $space =null;
-$space_err = $time = $time_err =$giventime_err =  null;
-$datetime_val = date("Y-m-d h:i:sa");
-echo $datetime_val;
+$origin = $origin_err = $destination = $destination_err = $space = null;
+$space_err = $time = $time_err = $giventime_err = null;
+$datetime_val = new DateTime('+1 hour');
+function validateDate($date, $format = 'Y-m-d H:i:s')
+{
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) == $date;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($_POST["origin"])) {
@@ -11,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $origin = test_input($_POST["origin"]);
         # todo foud out that pregmatch is not greedy
-        if (!preg_match("/^[A-Za-z]+(((\'|\-|\.)?([A-Za-z])+))?$/", $origin)) {
+        if (!preg_match("/^[a-zA-Z]+(?:[\s.]+[a-zA-Z]+)*$/", $origin)) {
             $origin_err = "Invalid place name";
             $origin = NULL;
         }
@@ -21,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $destination = test_input($_POST["destination"]);
         # todo foud out that pregmatch is not greedy
-        if (!preg_match("/^[A-Za-z]+(((\'|\-|\.)?([A-Za-z])+))?$/", $destination)) {
+        if (!preg_match("/^[a-zA-Z]+(?:[\s.]+[a-zA-Z]+)*$/", $destination)) {
             $destination_err = "Invalid destination name";
             $destination = NULL;
         }
@@ -32,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $space = test_input($_POST["space"]);
         # todo foud out that pregmatch is not greedy
         if (!preg_match("/^[1-9]+$/", $space)) {
-            $space = "Invalid first name";
+            $space = "Integer between 1-100, is required";
             $space_err = NULL;
         }
     }
@@ -40,15 +45,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $giventime_err = "Date time is required";
     } else {
         $datetime_val = test_input($_POST["datetime_val"]);
-        #todo work on how to select a date in future
-        # validate datetime
-//        if (!preg_match()) {
-//            $space = "Invalid first name";
-//            $space_err = NULL;
-//        }
+        if (!validateDate(validateDate($datetime_val, "Y-m-d\TH:i:s"))) {
+            $giventime_err = "Invalid date";
+        } else {
+            $datetime_val = new DateTime($datetime_val);
+        }
     }
     echo $datetime_val;
-    if ($destination && $origin && loggedin() &&  $datetime_val) {
+    if ($destination && $origin && loggedin() && $datetime_val) {
 //        echo $Email;
 //        $stmt = $conn->prepare("SELECT email FROM register WHERE email = '$email'");
 //        $stmt->execute();
@@ -117,7 +121,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="form-group row">
         <label for="giventime" class="col-sm-2 control-form-label">Date Time</label>
         <div class="col-sm-7 datetime-local">
-            <input type="datetime-local" name="datetime_val" id="giventime"  value="<?php echo date("c", strtotime($datetime_val)); ?>">
+            <input type="datetime-local" name="datetime_val" id="giventime"
+                   value="<?php echo $datetime_val->format("Y-m-d\TH:i:s") ?>" min="<?php echo $datetime_val->format("Y-m-d\TH:i:s") ?>" autocomplete>
         </div>
         <div class="col-sm-3 text-danger">
             <small class="text-danger">
@@ -125,8 +130,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </small>
         </div>
     </div>
-<!--    <input type="date" title="Enter the date in dd/mm/yyyy format" placeholder="Insert a valid date" pattern="([0-2]\d|3[0-1])\/(0\d|1[0-2])\/(19|20)\d{2}" onblur="checkPattern(this)">-->
-<!--    <input type="time" title="Insert a valid time in hh:mm:ss 24h format" placeholder="Insert a valid time" pattern="([0-1]\d|2[0-3]):[0-5]\d:[0-5]\d" onblur="checkPattern(this)">-->
 
     <div class="form-group">
         <div class="col-sm-offset-4 col-sm-10">

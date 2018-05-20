@@ -65,9 +65,9 @@ function local_postgres(){
     }
 }
 // used to switch to different database
-$conn = get_amazon();
+//$conn = get_amazon();
 //$conn =local();
-//$conn = local_postgres();
+$conn = local_postgres();
 function loggedin()
 {
     if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {

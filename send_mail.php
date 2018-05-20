@@ -21,7 +21,7 @@ function send_phpmailer($subject, $address, $body)
         $mail->Port = 587;                                    // TCP port to connect to
 
         //Recipients
-        $mail->setFrom('info@shareride-llc.herokuapp.com', 'ShareRide Inc');
+        $mail->setFrom('dennisngeno7@gmail.com', 'ShareRide Inc');
         $mail->addAddress($address, 'Dennis Ngeno');     // Add a recipient
 //    $mail->addAddress('ellen@example.com');               // Name is optional
 //    $mail->addReplyTo('info@example.com', 'Information');
