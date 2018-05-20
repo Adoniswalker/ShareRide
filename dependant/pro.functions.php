@@ -15,6 +15,7 @@ function select_db($conn, $sql, $parameters = null)
         foreach ($parameters as $key => $value) {
             $stmt->bindParam($key, $value);
         }
+//        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         return $stmt;
 
@@ -35,55 +36,57 @@ function send_mail_success($conn, $booked_ride_id)
         $passager_query = "select concat(first_name, ' ',last_name),
  email from booked_rides b 
                         left join register r on b.passanger = r.id where b.id =:id;";
-//    Todo enable chcking the object type and avoid interger 0
-        $driver_result = select_db($conn, $driver_query, array(':id' => $booked_ride_id))->fetchAll();
-        $passenger_result = select_db($conn, $passager_query, array(':id' => $booked_ride_id))->fetchAll();
-        $driver_email = $driver_result[1];
-        $passenger_email = $passenger_result[1];
-        $driver_subject = "Request to join ride";
-        $passenger_subject = "You ride was accepted";
+        $driver_result = select_db($conn, $driver_query, array(':id' => $booked_ride_id))->fetchAll()[0];
+        $passenger_result = select_db($conn, $passager_query, array(':id' => $booked_ride_id))->fetchAll()[0];
+        if (is_array($passenger_result ) && is_array($driver_result)) {
+            var_dump($driver_result);
+            var_dump($passenger_result);
+            //drier details
+            $driver_email = $driver_result['email'];
+            var_dump( $driver_email);
+            $driver_name = $driver_result['concat'];
+            $driver_origin = $driver_result['origin'];
+            $driver_destination = $driver_result['destination'];
+            $driver_space = $driver_result['space'];
+            $driver_date = $driver_result['date'];
+            //passenger Details
+            $passenger_email = $passenger_result['email'];
+            $passenger_name = $passenger_result['concat'];
+            $driver_subject = "Request to join ride";
+            $passenger_subject = "You ride was accepted";
 
-        $driver_message = "
+            $driver_message = "
                 <html>
                 <head>
-                <title>Dear $driver_result[0];</title>
+                <title>Dear $driver_name;</title>
                 </head>
                 <body>
-                <p>$passenger_result[0] has requested to join you in the ride</p>
-                <p>The passenger mail is $passenger_result[1]. The trip is from $driver_result[3] to $driver_result[4] </p>
-                <p>Available space is $driver_result[5]</p>
-                <p>The trip  will take place at $driver_result[2]</p>
+                <p>$passenger_name has requested to join you in the ride</p>
+                <p>The passenger mail is $passenger_email. The trip is from $driver_origin to $driver_destination </p>
+                <p>Available space is $driver_space</p>
+                <p>The trip  will take place at $driver_date</p>
                  </body>
                 </html>
                 ";
-        $passanger_message = "
+            $passanger_message = "
                 <html>
                 <head>
-                <title>Dear $passenger_result[0]</title>
+                <title>Dear $passenger_name</title>
                 </head>
                 <body>
-                <p>You got a ride with $driver_result[0]</p>
-                <p>The driver mail is $driver_result[1]. The trip is from $driver_result[3] to $driver_result[4] </p>
-                <p>Available space is $driver_result[5]</p>
-                <p>The trip  will take place at $driver_result[2]</p>
+                <p>You got a ride with $driver_name</p>
+                <p>The driver mail is $driver_email. The trip is from $driver_origin to $driver_destination </p>
+                <p>Available space is $driver_space</p>
+                <p>The trip  will take place at $driver_date</p>
                 </body>
                 </html>
                 ";
-
-// Always set content-type when sending HTML email
-        $headers = "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        echo $driver_message;
-        echo $passanger_message;
-        echo $passenger_subject, $driver_subject, $passenger_email, $driver_email;
-// More headers
-//    $headers .= 'From: <dennisngeno7@gmail.com>' . "\r\n";
-//    $headers .= 'Cc: myboss@example.com' . "\r\n";
-
-        mail($driver_email, $driver_subject, $driver_message, $headers);
-        mail($passenger_email, $passenger_subject, $passanger_message, $headers);
+            require_once "../send_mail.php";
+            send_phpmailer($driver_subject, $driver_email, $driver_message);
+            return send_phpmailer($passenger_subject, $passenger_email, $passanger_message);
+        }else{return 1;}
     }
-
+    return 2;
 }
 
 ?>

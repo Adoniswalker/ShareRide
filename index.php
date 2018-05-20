@@ -3,6 +3,11 @@
 
 require_once "dependant/layout.php";
 require_once "dependant/pro.functions.php";
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+//Load Composer's autoloader
+require 'vendor/autoload.php';
+
 if (loggedin()) {
     $user_name = get_user_data('first_name');
     if (isset($_GET['error'])) {
@@ -13,7 +18,6 @@ if (loggedin()) {
         $success = $_GET['success'];
         echo "<p class='badge-success'>$success</p>";
     }
-
 }
 ?>
 <div class="container">
@@ -85,5 +89,4 @@ where br.driver=:user_id";
         </div>
     </div>
 </div>
-
 <?php include "dependant/footer_file.php"; ?>

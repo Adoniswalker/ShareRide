@@ -20,7 +20,7 @@ function is_booked($id, $conn)
         return 0;
     }
 }
-#todo work on you cant book your Ride
+#todo database intergrity
 function find_driver($ride_id){
     global $conn;
     $query ="select driver from rides where id =:id";
@@ -38,21 +38,22 @@ if (loggedin()) {
         if ($user_id != find_driver($ride) && find_driver($ride)) {
             if (is_booked($ride, $conn)) {
                 $sql = 'insert into booked_rides (driver, passanger, space, ride) values
-                    ((select driver from rides where id=:ride),:user_id,:space,:ride);';
+                    ((select driver from rides where id=:ride),:user_id,:space,:ride) RETURNING id;';
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':ride', $ride);
                 $stmt->bindParam(':user_id', $user_id);
                 $stmt->bindParam(':space', $space_available);
 //            $stmt->bindParam(':id', $id);
                 $stmt->execute();
-                $last_id = $conn->LastInsertId();
+                $last_id = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
                 $stmt= $conn->prepare('update rides set booked=1 where id=:ride;');
                 $stmt->bindParam(':ride', $ride);
                 $stmt->execute();
 //                echo $last_id;
                 $stmt->closeCursor();
-                send_mail_success($conn, $last_id);
-                header('LOCATION: ../index.php?success=Go for ride!! Well send mail');
+                $mail = send_mail_success($conn, 1) ?'Mail sent' : 'Mail not sent';
+//                $mail = send_mail_success($conn, 1);
+                header("LOCATION: ../index.php?success=Go for ride!! $mail");
             } else {
                 header('LOCATION: ../index.php?error=Ride already taken!!');
             }
