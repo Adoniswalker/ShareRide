@@ -1,5 +1,7 @@
 <?php
 require_once "sesion_file.php";
+require_once "pro.functions.php";
+
 function is_booked($id, $conn)
 {
     $sql = "SELECT booked FROM rides WHERE id =:id";
@@ -24,7 +26,8 @@ function find_driver($ride_id){
     $query ="select driver from rides where id =:id";
     $driver_ans = select_db($conn,$query, array(':id'=>$ride_id));
     if($driver_ans) {
-        return $driver_ans->rowCount() ? $driver_ans->fetch()[0] : $driver_ans = 0;
+        $driver_id = $driver_ans->rowCount() ? $driver_ans->fetch()[0] : $driver_ans = 0;
+        return $driver_id;
     }else {return 0;}
 }
 if (loggedin()) {
@@ -44,6 +47,8 @@ if (loggedin()) {
 //            $stmt->bindParam(':id', $id);
                 $stmt->execute();
                 $last_id = $conn->LastInsertId();
+                echo $last_id;
+                $stmt->closeCursor();
                 send_mail_success($conn, $last_id);
                 header('LOCATION: ../index.php?success=Go for ride!! Well send mail');
             } else {
@@ -51,7 +56,7 @@ if (loggedin()) {
             }
         }else{
             $dr = find_driver($ride);
-            header("LOCATION: ../index.php?error=You cant book your own ride!$dr");
+            header("LOCATION: ../index.php?error=You cant book your own ride!");
 
         }
         echo "$ride, $user_id, $space_available";

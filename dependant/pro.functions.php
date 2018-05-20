@@ -33,8 +33,8 @@ function send_mail_success($conn, $booked_ride_id)
 
     $passager_query = "select concat(first_name, ' ',last_name), email from booked_rides b 
                         left join register r on b.passanger = r.id where b.id =:id;";
-    $driver_result = select_db($conn, $driver_query, array(':id'=>$booked_ride_id))->fetch();
-    $passenger_result = select_db($conn, $passager_query,array(':id'=>$booked_ride_id))->fetch();
+    $driver_result = select_db($conn, $driver_query, array(':id'=>$booked_ride_id))->fetchAll();
+    $passenger_result = select_db($conn, $passager_query,array(':id'=>$booked_ride_id))->fetchAll();
     $driver_email = $driver_result[1];
     $passenger_email = $passenger_result[1];
     $driver_subject = "Request to join ride";

@@ -1,5 +1,6 @@
 <?php
 require_once 'dependant/layout.php';
+require_once 'dependant/pro.functions.php';
 #todo the user can log in when looged in; will ask user if s/he want to log out
 $user_email = $user_email_err = $marked = NULL;
 $user_password = $user_password_err = NULL;
@@ -17,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user_password = test_input($_POST["user_password"]);
         $user_password = md5($user_password);
     }
-    if ($username && $user_password) {
+    if ($user_email && $user_password) {
         $stmt = $conn->prepare("SELECT email FROM register WHERE email = '$user_email'");
         $stmt->execute();
         if ($stmt->rowCount()) {

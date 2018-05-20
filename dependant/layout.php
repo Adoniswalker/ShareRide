@@ -24,6 +24,7 @@
             </li>
             <?php
             require "sesion_file.php";
+            require_once "dependant/pro.functions.php";
             if (loggedin()) {
                 $user_name = get_user_data('first_name');
                 echo '<li class= "nav-item pull"><a class="nav-link" href="log_out.php"> Log out</a></li>';
