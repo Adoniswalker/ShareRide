@@ -38,8 +38,7 @@ if (loggedin()) {
         if ($user_id != find_driver($ride) && find_driver($ride)) {
             if (is_booked($ride, $conn)) {
                 $sql = 'insert into booked_rides (driver, passanger, space, ride) values
-                    ((select driver from rides where id=:ride),:user_id,:space,:ride);
-                     update rides set booked=1 where id=:ride;';
+                    ((select driver from rides where id=:ride),:user_id,:space,:ride);';
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(':ride', $ride);
                 $stmt->bindParam(':user_id', $user_id);
@@ -47,7 +46,10 @@ if (loggedin()) {
 //            $stmt->bindParam(':id', $id);
                 $stmt->execute();
                 $last_id = $conn->LastInsertId();
-                echo $last_id;
+                $stmt= $conn->prepare('update rides set booked=1 where id=:ride;');
+                $stmt->bindParam(':ride', $ride);
+                $stmt->execute();
+//                echo $last_id;
                 $stmt->closeCursor();
                 send_mail_success($conn, $last_id);
                 header('LOCATION: ../index.php?success=Go for ride!! Well send mail');
@@ -66,6 +68,6 @@ if (loggedin()) {
 //    header('LOCATION: index.php');
 
 } else {
-    header('LOCATION: login_page.php?next=book.php');
+    header('LOCATION: ../login_page.php?next=book.php');
 }
 ?>

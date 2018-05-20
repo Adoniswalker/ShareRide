@@ -46,8 +46,28 @@ function local(){
         echo "there was an error <br>". $e->getMessage();
     }
 }
+function local_postgres(){
+    $dbopts = parse_url(getenv('DATABASE_URL'));
+    try {
+        $user = 'adoniswalker';
+        $password = 'adonis254';
+        $host ='127.0.0.1';
+        $port = '5432';
+        $dbname = 'shareride';
+        $conn = new PDO("pgsql:host=$host;dbname=$dbname;user=$user;port=$port;password=$password");
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $conn;
+    }
+    catch(PDOException $e)
+    {
+        echo "there was an error <br>". $e->getMessage();
+    }
+}
+// used to switch to different database
 $conn = get_amazon();
 //$conn =local();
+//$conn = local_postgres();
 function loggedin()
 {
     if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
@@ -61,7 +81,7 @@ function get_user_data($field)
 {
     global $conn;
     $id = $_SESSION['user_id'];
-    $ud = $conn->prepare("SELECT `$field` FROM register WHERE id = $id ");
+    $ud = $conn->prepare("SELECT '$field' FROM register WHERE id = $id ");
     try {
         $ud->execute();
         if ($ud->rowcount()) {

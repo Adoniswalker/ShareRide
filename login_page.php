@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("SELECT email FROM register WHERE email = '$user_email'");
         $stmt->execute();
         if ($stmt->rowCount()) {
-            $li = $conn->prepare("SELECT id FROM register WHERE email = '$user_email' && password = '$user_password'");
+            $li = $conn->prepare("SELECT id FROM register WHERE email = '$user_email' and password = '$user_password'");
             $li->execute();
             if ($li->rowCount()) {
                 $row = $li->fetch();

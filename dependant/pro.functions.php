@@ -27,20 +27,23 @@ function select_db($conn, $sql, $parameters = null)
 
 function send_mail_success($conn, $booked_ride_id)
 {
-    $driver_query = "select concat(rg.first_name,' ', rg.last_name), rg.email, r.date, r.origin, r.destination, r.space
+    if (settype($booked_ride_id, "int") && is_object($conn)) {
+        $driver_query = "select concat(rg.first_name,' ', rg.last_name), rg.email, r.date, r.origin, r.destination, r.space
                       from booked_rides b left join register rg on b.driver = rg.id
                       left join rides r on b.ride =r.id where b.id=:id;";
 
-    $passager_query = "select concat(first_name, ' ',last_name), email from booked_rides b 
+        $passager_query = "select concat(first_name, ' ',last_name),
+ email from booked_rides b 
                         left join register r on b.passanger = r.id where b.id =:id;";
-    $driver_result = select_db($conn, $driver_query, array(':id'=>$booked_ride_id))->fetchAll();
-    $passenger_result = select_db($conn, $passager_query,array(':id'=>$booked_ride_id))->fetchAll();
-    $driver_email = $driver_result[1];
-    $passenger_email = $passenger_result[1];
-    $driver_subject = "Request to join ride";
-    $passenger_subject = "You ride was accepted";
+//    Todo enable chcking the object type and avoid interger 0
+        $driver_result = select_db($conn, $driver_query, array(':id' => $booked_ride_id))->fetchAll();
+        $passenger_result = select_db($conn, $passager_query, array(':id' => $booked_ride_id))->fetchAll();
+        $driver_email = $driver_result[1];
+        $passenger_email = $passenger_result[1];
+        $driver_subject = "Request to join ride";
+        $passenger_subject = "You ride was accepted";
 
-    $driver_message = "
+        $driver_message = "
                 <html>
                 <head>
                 <title>Dear $driver_result[0];</title>
@@ -53,7 +56,7 @@ function send_mail_success($conn, $booked_ride_id)
                  </body>
                 </html>
                 ";
-    $passanger_message = "
+        $passanger_message = "
                 <html>
                 <head>
                 <title>Dear $passenger_result[0]</title>
@@ -68,17 +71,19 @@ function send_mail_success($conn, $booked_ride_id)
                 ";
 
 // Always set content-type when sending HTML email
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    echo $driver_message;
-    echo $passanger_message;
-    echo $passenger_subject, $driver_subject, $passenger_email, $driver_email;
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        echo $driver_message;
+        echo $passanger_message;
+        echo $passenger_subject, $driver_subject, $passenger_email, $driver_email;
 // More headers
 //    $headers .= 'From: <dennisngeno7@gmail.com>' . "\r\n";
 //    $headers .= 'Cc: myboss@example.com' . "\r\n";
 
-    mail($driver_email, $driver_subject, $driver_message, $headers);
-    mail($passenger_email, $passenger_subject,$passanger_message, $headers );
+        mail($driver_email, $driver_subject, $driver_message, $headers);
+        mail($passenger_email, $passenger_subject, $passanger_message, $headers);
+    }
+
 }
 
 ?>
