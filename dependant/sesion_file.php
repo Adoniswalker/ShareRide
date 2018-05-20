@@ -12,13 +12,12 @@ if (isset($_SERVER['HTTP_REFERER'])) {
 //require_once 'db.connect.php';
 function get_amazon(){
     $dbopts = parse_url(getenv('DATABASE_URL'));
-    var_dump($dbopts);
     try {
         $user = $dbopts["user"];
         $password = $dbopts["pass"];
         $host =$dbopts["host"];
         $port = $dbopts["port"];
-        $dbname = $dbopts["database"];
+        $dbname = ltrim($dbopts["path"],'/');
         $conn = new PDO("pgsql:host=$host;dbname=$dbname;user=$user;port=$port;password=$password");
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
