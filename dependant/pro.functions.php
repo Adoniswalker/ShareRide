@@ -10,12 +10,10 @@ function test_input($data)
 function select_db($conn, $sql, $parameters = null)
 {
     try {
-//        var_dump($parameters);
         $stmt = $conn->prepare($sql);
         foreach ($parameters as $key => $value) {
             $stmt->bindParam($key, $value);
         }
-//        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();
         return $stmt;
 

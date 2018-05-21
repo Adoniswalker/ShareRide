@@ -5,7 +5,16 @@ session_start();
 if (isset($_SERVER['HTTP_REFERER'])) {
     $referer = $_SERVER['HTTP_REFERER'];
 }
-
+/* This function is used to check if the php is production or not */
+function check_environmet()
+{
+    $SandboxFile = dirname(__DIR__) . '/sandbox_server.txt';
+    if (file_exists($SandboxFile)) {
+        return 0;
+    } else {
+        return 1;
+    }
+}
 /*if(!$referer){
 	$referer = NULL;
 }*/
@@ -65,9 +74,9 @@ function local_postgres(){
     }
 }
 // used to switch to different database
-$conn = get_amazon();
-//$conn =local();
-//$conn = local_postgres();
+
+//returns the database connection for the production or developnment
+$conn = check_environmet() ? get_amazon():local_postgres();
 function loggedin()
 {
     if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
