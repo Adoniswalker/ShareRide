@@ -37,11 +37,11 @@ function send_mail_success($conn, $booked_ride_id)
         $driver_result = select_db($conn, $driver_query, array(':id' => $booked_ride_id))->fetchAll()[0];
         $passenger_result = select_db($conn, $passager_query, array(':id' => $booked_ride_id))->fetchAll()[0];
         if (is_array($passenger_result ) && is_array($driver_result)) {
-            var_dump($driver_result);
-            var_dump($passenger_result);
+//            var_dump($driver_result);
+//            var_dump($passenger_result);
             //drier details
             $driver_email = $driver_result['email'];
-            var_dump( $driver_email);
+//            var_dump( $driver_email);
             $driver_name = $driver_result['concat'];
             $driver_origin = $driver_result['origin'];
             $driver_destination = $driver_result['destination'];

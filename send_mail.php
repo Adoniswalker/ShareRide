@@ -38,8 +38,6 @@ function send_phpmailer($subject, $address, $body)
         $mail->Body = $body;
 //        $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
-        $mail->send();
-
         if (!$mail->send()) {
             $error = "Mailer Error: " . $mail->ErrorInfo;
             echo '<p id="para">' . $error . '</p>';
