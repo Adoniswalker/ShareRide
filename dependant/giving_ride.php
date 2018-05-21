@@ -15,7 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $origin_err = "Origin is required";
     } else {
         $origin = test_input($_POST["origin"]);
-        # todo foud out that pregmatch is not greedy
         if (!preg_match("/^[a-zA-Z]+(?:[\s.]+[a-zA-Z]+)*$/", $origin)) {
             $origin_err = "Invalid place name";
             $origin = NULL;
@@ -25,7 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $desination_err = "Destination is required";
     } else {
         $destination = test_input($_POST["destination"]);
-        # todo foud out that pregmatch is not greedy
         if (!preg_match("/^[a-zA-Z]+(?:[\s.]+[a-zA-Z]+)*$/", $destination)) {
             $destination_err = "Invalid destination name";
             $destination = NULL;
@@ -35,7 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $space = 1;
     } else {
         $space = test_input($_POST["space"]);
-        # todo foud out that pregmatch is not greedy
         if (!preg_match("/^[1-9]+$/", $space)) {
             $space = "Integer between 1-100, is required";
             $space_err = NULL;
@@ -44,14 +41,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["datetime_val"])) {
         $giventime_err = "Date time is required";
     } else {
-        $datetime_val = test_input($_POST["datetime_val"]);
-        if (!validateDate(validateDate($datetime_val, "Y-m-d\TH:i:s"))) {
-            $giventime_err = "Invalid date";
-        } else {
-            $datetime_val = new DateTime($datetime_val);
+        $datetime_v = test_input($_POST["datetime_val"]);
+        if (validateDate($datetime_v, "Y-m-d\TH:i:s")) {
+            $datetime_val = new DateTime($datetime_v);
         }
     }
-    echo $datetime_val;
     if ($destination && $origin && loggedin() && $datetime_val) {
 //        echo $Email;
 //        $stmt = $conn->prepare("SELECT email FROM register WHERE email = '$email'");
@@ -65,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bindParam(':destination', $destination);
             $stmt->bindParam(':space_to', $space);
             $stmt->bindParam(':driver', $driver);
-            $stmt->bindParam(':datetime_val', $datetime_val);
+            $stmt->bindParam(':datetime_val', $datetime_val->format('Y-m-d H:i:s'));
             $stmt->execute();
             header('LOCATION: index.php?success=You invited others!! wait for them to pick');
         } catch (PDOException $e) {

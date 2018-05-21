@@ -13,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $first_name_err = "First name is required";
     } else {
         $first_name = test_input($_POST["first_name"]);
-        # todo foud out that pregmatch is not greedy
         if (!preg_match("/^[A-Za-z]+(((\'|\-|\.)?([A-Za-z])+))?$/", $first_name)) {
             $first_name_err = "Invalid first name";
             $first_name = NULL;
@@ -23,7 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $last_name_err = "Last name is required";
     } else {
         $last_name = test_input($_POST["last_name"]);
-        # todo foud out that pregmatch is not greedy
         if (!preg_match("/^[A-Za-z]+(((\'|\-|\.)?([A-Za-z])+))?$/", $last_name)) {
             $last_name_err = "Invalid last name";
             $last_name = NULL;

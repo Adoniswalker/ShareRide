@@ -11,7 +11,7 @@ function send_phpmailer($subject, $address, $body)
     $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
     try {
         //Server settings
-        $mail->SMTPDebug = 2;                                 // Enable verbose debug output
+//        $mail->SMTPDebug = 2;                                 // Enable verbose debug output
         $mail->isSMTP();                                      // Set mailer to use SMTP
         $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
         $mail->SMTPAuth = true;                               // Enable SMTP authentication
@@ -41,13 +41,14 @@ function send_phpmailer($subject, $address, $body)
         if (!$mail->send()) {
             $error = "Mailer Error: " . $mail->ErrorInfo;
             echo '<p id="para">' . $error . '</p>';
-            return 0;
+            return 3;
         } else {
             echo '<p id="para">Message sent!</p>';
             return 1;
         }
     } catch (Exception $e) {
         echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
-        return 0;
+        return 4;
     }
 }
+//echo send_phpmailer("Checking if working", "dennisngeno7@hotmail.com","Testing");

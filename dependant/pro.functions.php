@@ -36,7 +36,7 @@ function send_mail_success($conn, $booked_ride_id)
                         left join register r on b.passanger = r.id where b.id =:id;";
         $driver_result = select_db($conn, $driver_query, array(':id' => $booked_ride_id))->fetchAll()[0];
         $passenger_result = select_db($conn, $passager_query, array(':id' => $booked_ride_id))->fetchAll()[0];
-        if (is_array($passenger_result ) && is_array($driver_result)) {
+        if (is_array($passenger_result) && is_array($driver_result)) {
 //            var_dump($driver_result);
 //            var_dump($passenger_result);
             //drier details
@@ -82,7 +82,9 @@ function send_mail_success($conn, $booked_ride_id)
             require_once "../send_mail.php";
             send_phpmailer($driver_subject, $driver_email, $driver_message);
             return send_phpmailer($passenger_subject, $passenger_email, $passanger_message);
-        }else{return 1;}
+        } else {
+            return 5;
+        }
     }
     return 2;
 }

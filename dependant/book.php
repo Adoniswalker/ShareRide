@@ -51,8 +51,8 @@ if (loggedin()) {
                 $stmt->execute();
 //                echo $last_id;
                 $stmt->closeCursor();
-                $mail = send_mail_success($conn, 1) ?'Mail sent' : 'Mail not sent';
-//                $mail = send_mail_success($conn, 1);
+                $mail = send_mail_success($conn,$last_id)==1 ?'Mail sent' : 'Mail not sent';
+//                $mail = send_mail_success($conn, $last_id);
                 header("LOCATION: ../index.php?success=Go for ride!! $mail");
             } else {
                 header('LOCATION: ../index.php?error=Ride already taken!!');
@@ -62,7 +62,7 @@ if (loggedin()) {
             header("LOCATION: ../index.php?error=You cant book your own ride!");
 
         }
-        echo "$ride, $user_id, $space_available";
+//        echo "$ride, $user_id, $space_available";
     } else {
         header('LOCATION: ../index.php?error=Ride not found!!');
     }
