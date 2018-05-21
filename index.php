@@ -24,7 +24,7 @@ if (loggedin()) {
     <div class="row">
         <div class="col-md-8">
             <?php
-            echo "<table class='table table-dark table-hover'>";
+            echo "<table class='table table-dark table-hover table-responsive'>";
             echo "<thead><th scope='col'>Id</th><th scope='col'>Origin</th><th scope='col'>Destination</th>
             <th scope='col'>Space</th><th scope='col'>Date</th><th scope='col'>Name</th><th scope='col'>Book</th></thead>";
             try {
