@@ -51,7 +51,8 @@ if (loggedin()) {
                 $stmt->execute();
 //                echo $last_id;
                 $stmt->closeCursor();
-                $mail = send_mail_success($conn,$last_id)==1 ?'Mail sent' : 'Mail not sent';
+                $mail = send_mail_success($conn,$last_id);
+                $mail = $mail==1 ?'Mail sent' : "Mail not sent, error $mail";
 //                $mail = send_mail_success($conn, $last_id);
                 header("LOCATION: ../index.php?success=Go for ride!! $mail");
             } else {

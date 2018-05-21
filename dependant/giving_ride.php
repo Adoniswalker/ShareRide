@@ -44,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $datetime_v = test_input($_POST["datetime_val"]);
         if (validateDate($datetime_v, "Y-m-d\TH:i:s")) {
             $datetime_val = new DateTime($datetime_v);
+            $datetime_val->add(new DateInterval('P1D'));
         }
     }
     if ($destination && $origin && loggedin() && $datetime_val) {
